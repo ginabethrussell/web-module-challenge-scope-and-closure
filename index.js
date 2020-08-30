@@ -17,6 +17,7 @@
 function processFirstItem(stringList, callback) {
   return callback(stringList[0])
 }
+console.log(processFirstItem(['foo', 'bar'], (str) => str + str));
 
 // ⭐️ Example Challenge END ⭐️
 
@@ -27,11 +28,21 @@ function processFirstItem(stringList, callback) {
  * Study the code for counter1 and counter2. Answer the questions below.
  * 
  * 1. What is the difference between counter1 and counter2?
+ *  counter1 uses a closure to hold onto the value in count when the returned function 
+ *  is called to increment the count value by 1. Successive calls will increment count.
+ *  counter2 increments the variable count by accessing the value from the global scope
+ *  when the counter2 function is called. Both functions result in an incremented count. 
  * 
  * 2. Which of the two uses a closure? How can you tell?
+ *  counter1 uses a closure because a function is defined inside another function. The inner
+ *  function has access to the outer function scope of counterMaker and its count variable.
  * 
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
- *
+ *  counter1 keeps the count variable available but privately enclosed. This is better to 
+ *  avoid potential variable conflicts. counter1 code also stores this outer variable with the
+ *  new function and can be called later.  Counter2 requires using a variable in the global scope, 
+ *  which is not generally a good idea. It also runs immediately when called.
+ * 
 */
 
 // counter1 code
@@ -42,6 +53,11 @@ function counterMaker() {
   }
 }
 
+// const newCounter = counterMaker();
+// console.log(newCounter);
+// console.log(newCounter());
+// console.log(newCounter());
+
 const counter1 = counterMaker();
 
 // counter2 code
@@ -51,16 +67,19 @@ function counter2() {
   return count++;
 }
 
+// console.log(counter2());
+// console.log(counter2());
 
 /* Task 2: inning() 
 
 Write a function called `inning` that returns a random number of points that a team scored in an inning. This should be a whole number between 0 and 2. */
 
-function inning(/*Code Here*/){
-
-    /*Code Here*/
-
+function inning(){
+  return Math.floor(Math.random() * 3);
 }
+// console.log(inning());
+// console.log(inning());
+// console.log(inning());
 
 /* Task 3: finalScore()
 
@@ -76,11 +95,18 @@ finalScore(inning, 9) might return:
 
 */ 
 
-function finalScore(/*code Here*/){
-
-  /*Code Here*/
-
+function finalScore(callback, numInnings){
+  const finalScore = {
+    "Home": 0,
+    "Away": 0
+  }
+  for (let i = 0; i < numInnings; i++){
+    finalScore.Home += callback();
+    finalScore.Away += callback();
+  }
+  return finalScore;
 }
+console.log(finalScore(inning, 9));
 
 /* Task 4: 
 
