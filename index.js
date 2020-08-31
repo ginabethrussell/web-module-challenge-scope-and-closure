@@ -34,14 +34,11 @@ console.log(processFirstItem(['foo', 'bar'], (str) => str + str));
  *  when the counter2 function is called. Both functions result in an incremented count. 
  * 
  * 2. Which of the two uses a closure? How can you tell?
- *  counter1 uses a closure because a function is defined inside another function. The inner
- *  function has access to the outer function scope of counterMaker and its count variable.
+ *  counter1 uses a closure because a function is defined inside another function. The inner function has access to the outer function scope of counterMaker and its count variable.
  * 
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
- *  counter1 keeps the count variable available but privately enclosed. This is better to 
- *  avoid potential variable conflicts. counter1 code also stores this outer variable with the
- *  new function and can be called later.  Counter2 requires using a variable in the global scope, 
- *  which is not generally a good idea. It also runs immediately when called.
+ *  counter1 keeps the count variable available but privately enclosed. This is better to avoid potential variable conflicts. counter1 code also stores this outer variable with the new function and can be called later. The counterMaker in counter1 can also be reused to make multiple counters which each keep track of their own counter variable. This is not possible with counter2.
+ * Counter2 requires using a variable in the global scope, which is not generally a good idea. It also runs immediately when called.
  * 
 */
 
@@ -116,7 +113,7 @@ Create a function called `scoreboard` that accepts the following parameters:
 (2) Callback function `inning`
 (3) A number of innings
 
-and returns the score at each pont in the game, like so:
+and returns the score at each point in the game, like so:
 1st inning: awayTeam - homeTeam
 2nd inning: awayTeam - homeTeam
 3rd inning: awayTeam - homeTeam
@@ -128,9 +125,41 @@ and returns the score at each pont in the game, like so:
 9th inning: awayTeam - homeTeam
 Final Score: awayTeam - homeTeam */
 
+function getInningScore(num, gameScore, inning){
+  let numStr;
+  if (num === 1){
+    numStr = `${num}st inning`;
+  }else {
+    numStr = `${num}th inning`;
+  }
+  // Call inning callback function to get inning score for each team 
+  let homeInnScore = inning();
+  let awayInnScore = inning();
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+  // Update score object values
+  gameScore.Home += homeInnScore;
+  gameScore.Away += awayInnScore;
+
+  // Return an array with inning results string and gameScore object
+  return [` ${numStr}: ${awayInnScore} - ${homeInnScore}`, gameScore];
 }
 
+function scoreboard(getInningScore, inning, numInnings) {
+  let gameScore = {
+    Home: 0,
+    Away: 0
+  } 
+  
+  // For each inning call getInningScore callback to get an array containing an inning score result string and an updated gameScore object
+  let inningResult = [];
 
+  for (let i = 1; i <= numInnings; i ++){
+    inningResult = getInningScore(i, gameScore, inning);
+    console.log(inningResult[0]);
+  }
+  return(`Final Score: ${inningResult[1].Away} - ${inningResult[1].Home}`);
+}
+
+console.log("Baseball Scoreboard");
+console.log("Inning   Away - Home");
+console.log(scoreboard(getInningScore, inning, 9));
