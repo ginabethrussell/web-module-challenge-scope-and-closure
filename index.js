@@ -15,7 +15,7 @@
  * should return 'foofoo'.
 */
 function processFirstItem(stringList, callback) {
-  return callback(stringList[0])
+  return callback(stringList[0]);
 }
 console.log(processFirstItem(['foo', 'bar'], (str) => str + str));
 

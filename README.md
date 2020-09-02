@@ -66,12 +66,15 @@ dansRoll();
 ```
 
 a. Where is closure used in this code? How can you tell?
+
   The closure occurs when the inner function accesses the name passed into the parent function and returns its value to be reused even after the parent function ends.
 
 b. Compare and contrast calling `dansRoll` the first and second time. What is always the same? What could change?
+
 Calling dansRoll will always hold onto the same name that was brought in with the initial closure with the parent function. Each dansRoll call generates a new roll and may generate a new value between 1 and 6 in the template literal.
 
 c. What is the lexical scope of `newRoll`? 
+
 newRoll is declared with const and is block scoped. In this example the block is the inner anonymous function returned from the call to personalDice. newRoll is not accessible in the global scope or inside the parent function personalDice outside of the anonymous function.
 
 ### Task 2c - Exit Ticket
