@@ -17,7 +17,7 @@
 function processFirstItem(stringList, callback) {
   return callback(stringList[0]);
 }
-console.log(processFirstItem(['foo', 'bar'], (str) => str + str));
+// console.log(processFirstItem(['foo', 'bar'], (str) => str + str));
 
 // ⭐️ Example Challenge END ⭐️
 
@@ -38,7 +38,7 @@ console.log(processFirstItem(['foo', 'bar'], (str) => str + str));
  * 
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
  *  counter1 keeps the count variable available but privately enclosed. This is better to avoid potential variable conflicts. counter1 code also stores this outer variable with the new function and can be called later. The counterMaker in counter1 can also be reused to make multiple counters which each keep track of their own counter variable. This is not possible with counter2.
- * Counter2 requires using a variable in the global scope, which is not generally a good idea. It also runs immediately when called.
+ * Counter2 requires using a variable in the global scope, which is not generally a good idea. Counter2 would be preferable if the variable count needs to be accessed by some other part of your program. It also runs immediately when called.
  * 
 */
 
@@ -54,8 +54,9 @@ function counterMaker() {
 // console.log(newCounter);
 // console.log(newCounter());
 // console.log(newCounter());
-
-const counter1 = counterMaker();
+// console.log(newCounter());
+// const counter1 = counterMaker();
+// console.log(counter1());
 
 // counter2 code
 let count = 0;
@@ -103,7 +104,7 @@ function finalScore(callback, numInnings){
   }
   return finalScore;
 }
-console.log(finalScore(inning, 9));
+// console.log(finalScore(inning, 9));
 
 /* Task 4: 
 
@@ -126,9 +127,14 @@ and returns the score at each point in the game, like so:
 Final Score: awayTeam - homeTeam */
 
 function getInningScore(num, gameScore, inning){
+  // Create inning string to log
   let numStr;
   if (num === 1){
     numStr = `${num}st inning`;
+  }else if (num === 2){
+    numStr = `${num}nd inning`;
+  }else if (num === 3){
+    numStr = `${num}rd inning`;
   }else {
     numStr = `${num}th inning`;
   }
@@ -145,12 +151,12 @@ function getInningScore(num, gameScore, inning){
 }
 
 function scoreboard(getInningScore, inning, numInnings) {
-  let gameScore = {
+  const gameScore = {
     Home: 0,
     Away: 0
   } 
   
-  // For each inning call getInningScore callback to get an array containing an inning score result string and an updated gameScore object
+  // For each inning, call getInningScore callback to get an array containing an inning score result string and an updated gameScore object
   let inningResult = [];
 
   for (let i = 1; i <= numInnings; i ++){
